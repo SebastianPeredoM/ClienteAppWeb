@@ -1,0 +1,126 @@
+<ngb-alert *ngIf="alert" [type]="alert.type" (closed)="alert = null">{{ alert.message }}</ngb-alert>
+
+<div class="row justify-content-end">
+    <div class="col-4">
+        <button class="btn btn-outline-primary" (click)="open(mymodal)">
+            <span *ngIf="registrando" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            {{ registrando ? 'Registrando...' : 'Nuevo cliente' }}
+        </button>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div *ngIf="clientes.length > 0">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Edad</th>
+                        <th>Fecha nacimiento</th>
+                        <th>Fecha muerte probable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cliente of clientes">
+                        <td>{{ cliente.nombre }}</td>
+                        <td>{{ cliente.apellido }}</td>
+                        <td>{{ cliente.edad }}</td>
+                        <td>{{ cliente.fecha_nacimiento | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ cliente.fecha_muerte_prob | date: 'dd/MM/yyyy' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="clientes.length == 0 && !loading">
+        <p class="text-center">No tienes clientes registrados!!! D:</p>
+    </div>
+    <app-loading *ngIf="loading"></app-loading>
+</div>
+
+<ng-template #mymodal let-modal>
+    <form autocomplete="off" (ngSubmit)="registrarCliente(forma)" #forma="ngForm">
+        <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Nuevo cliente</h4>
+        <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button> -->
+        </div>
+        <div class="modal-body">
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Nombre</label>
+                <div class="col-10">
+                    <input  class="form-control"
+                            type="text"
+                            name="nombre"
+                            placeholder="Nombre"
+                            [class.is-invalid]="nombre.invalid && nombre.touched"
+                            [ngModel]="newCliente.nombre"
+                            maxlength="55"
+                            required
+                            #nombre="ngModel">
+                  <small *ngIf="nombre.invalid && nombre.touched"
+                         class="form-text text-danger">Ingrese el nombre</small>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Apellido</label>
+                <div class="col-10">
+                    <input  class="form-control"
+                            type="text"
+                            name="apellido"
+                            placeholder="Apellido"
+                            [class.is-invalid]="apellido.invalid && apellido.touched"
+                            [ngModel]="newCliente.apellido"
+                            maxlength="55"
+                            required
+                            #apellido="ngModel">
+                  <small *ngIf="apellido.invalid && apellido.touched"
+                         class="form-text text-danger">Ingrese el apellido</small>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Fecha de nacimiento</label>
+                <div class="col-10">
+                    <input  class="form-control"
+                            type="date"
+                            name="fechaNac"
+                            placeholder="fechaNac"
+                            [class.is-invalid]="fechaNac.invalid && fechaNac.touched"
+                            [ngModel]="newCliente.fechaNac"
+                            min="{{ minDate | date: 'yyyy-MM-dd' }}"
+                            max="{{ todayDate | date: 'yyyy-MM-dd' }}"
+                            required
+                            #fechaNac="ngModel">
+                  <small *ngIf="fechaNac.invalid && fechaNac.touched"
+                         class="form-text text-danger">Ingrese la fecha de nacimiento</small>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Edad</label>
+                <div class="col-10">
+                    <input  class="form-control"
+                            type="text"
+                            name="edad"
+                            placeholder="edad"
+                            [class.is-invalid]="edad.invalid && edad.touched"
+                            [ngModel]="calcularEdad(fechaNac.viewModel)"
+                            required
+                            #edad="ngModel"
+                            readonly>
+                  <small *ngIf="edad.invalid && edad.touched"
+                         class="form-text text-danger">Ingrese la edad</small>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Save click')">Cancelar</button>
+            <button type="button" class="btn btn-outline-primary" type="submit">Registrar</button>
+        </div>
+    </form>
+  </ng-template>

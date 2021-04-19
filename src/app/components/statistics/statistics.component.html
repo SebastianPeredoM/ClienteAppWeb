@@ -1,0 +1,16 @@
+<ngb-alert *ngIf="alert" [type]="alert.type" (closed)="alert = null">{{ alert.message }}</ngb-alert>
+
+<app-loading *ngIf="loading"></app-loading>
+
+<div *ngIf="kpi != null" class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">KPI Clientes</h5>
+                <p class="card-text">Promedio de edad: {{ kpi.promedio | number : '.0-4' }}</p>
+                <p class="card-text">Desviación estandar: {{ kpi.desviacion | number : '.0-4' }}</p>
+                <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+            </div>
+        </div>
+    </div>
+</div>
