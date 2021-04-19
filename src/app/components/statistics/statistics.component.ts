@@ -21,9 +21,9 @@ export class StatisticsComponent implements OnInit {
     this.service.getKpiClientes().subscribe(
       (data: Kpi) => {
         this.kpi = data
+        this.loading = false
       }, err => {
         this.alert = { type: 'danger', message: err.error.msj }
-      }, () => {
         this.loading = false
       }
     )

@@ -40,9 +40,9 @@ export class HomeComponent implements OnInit {
     this.service.getListaClientes().subscribe(
       (data: Cliente[]) => {
         this.clientes = data
+        this.loading = false
       }, err => {
         this.alert = { type: 'danger', message: err.error.msj }
-      }, () => {
         this.loading = false
       }
     )
@@ -71,9 +71,9 @@ export class HomeComponent implements OnInit {
       (data: any) => {
         this.clientes.unshift(data.cliente);
         this.alert = { type: 'success', message: data.msj }
+        this.registrando = false
       }, err => {
         this.alert = { type: 'danger', message: err.error.msj }
-      }, () => {
         this.registrando = false
       }
     )
