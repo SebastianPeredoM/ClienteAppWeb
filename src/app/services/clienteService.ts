@@ -9,8 +9,7 @@ import { Cliente } from '../models/ClienteModel';
   })
   export class ClienteService {
 
-    private RUTA_BASE = 'https://cvm4i7eap3.execute-api.us-east-1.amazonaws.com/dev/cliente/';
-    // private RUTA_BASE = 'http://localhost:3000/dev/cliente/';
+    private RUTA_BASE = 'http://localhost:3000/dev/cliente/';
     private HEADERS = new HttpHeaders({
         // Sin headers
     });
